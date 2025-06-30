@@ -11,8 +11,6 @@ G.add_edge("Agra", "Lucknow", weight=330)
 G.add_edge("Delhi", "Lucknow", weight=550)
 G.add_edge("Udaipur", "Ahmedabad", weight=260)
 G.add_edge("Jaipur", "Ahmedabad", weight=660)
-
-# Ask user to input source and destination cities
 start = input("Enter starting city: ")
 end = input("Enter destination city: ")
 
@@ -27,3 +25,5 @@ if start in G.nodes and end in G.nodes:
     print(f"Total Distance: {distance} km")
 else:
     print("One or both cities not found in the map.")
+
+        
