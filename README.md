@@ -10,7 +10,6 @@ For multi-destination logistics, the system builds a graph from API distances an
 This ensures the solution is both practical (real-world API data) and algorithmically strong (graph optimization), while keeping sustainability at the core.
 
 Progress:
-
 -Added user input for start location + multiple destinations
 -Integrated OpenRouteService API to fetch distances instead of hardcoding
 -Implemented a flexible [get_coords()] function that accepts both:
