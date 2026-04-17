@@ -1,11 +1,8 @@
 from fastapi import FastAPI
-import joblib
+
+from services.route_service import get_route
 
 app = FastAPI()
-
-model = joblib.load(
-    "models/xgboost_model.pkl"
-)
 
 
 @app.get("/")
@@ -13,21 +10,17 @@ def home():
 
     return {
         "message":
-        "Green Logistics Optimiser API"
+        "Green Logistics Optimiser"
     }
 
 
-@app.get("/predict")
-def predict(
-    distance: float,
-    traffic: float
+@app.get("/route")
+def route(
+    source: str,
+    destination: str
 ):
 
-    prediction = model.predict(
-        [[distance, traffic]]
-    )[0]
-
-    return {
-        "predicted_time":
-        round(float(prediction), 2)
-    }
+    return get_route(
+        source,
+        destination
+    )
