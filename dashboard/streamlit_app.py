@@ -1,8 +1,16 @@
+import sys
 import streamlit as st
+import os
 import requests
 import folium
-
 from streamlit_folium import st_folium
+
+sys.path.append(
+    os.path.dirname(
+        os.path.dirname(__file__)
+    )
+)
+
 from config import CITY_NODES
 
 
@@ -24,6 +32,10 @@ destination = st.selectbox(
     index=len(CITY_NODES) - 1
 )
 
+if "route_result" not in st.session_state:
+    st.session_state.route_result = None
+
+
 if st.button("Find Optimal Route"):
 
     response = requests.get(
@@ -34,7 +46,12 @@ if st.button("Find Optimal Route"):
         }
     )
 
-    result = response.json()
+    st.session_state.route_result = response.json()
+
+
+if st.session_state.route_result:
+
+    result = st.session_state.route_result
 
     st.subheader("Route Details")
 
@@ -76,8 +93,15 @@ if st.button("Find Optimal Route"):
         weight=5
     ).add_to(m)
 
+    st.write("About to render map")
+
+    
+
     st_folium(
         m,
-        width=900,
-        height=500
+         width=900,
+         height=500
+         returned_objects=[]
     )
+
+    st.write("Map generated successfully")
