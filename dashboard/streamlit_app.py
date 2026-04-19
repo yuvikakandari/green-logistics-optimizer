@@ -100,7 +100,7 @@ if st.session_state.route_result:
     st_folium(
         m,
          width=900,
-         height=500
+         height=500,
          returned_objects=[]
     )
 
