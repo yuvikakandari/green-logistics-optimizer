@@ -7,6 +7,8 @@ def choose_best_route(
     source,
     destination
 ):
+    
+    print("Using intelligent routing")
 
     routes = get_candidate_routes(
         graph,
@@ -32,5 +34,8 @@ def choose_best_route(
 
             best_score = score
             best_route = route
+
+    print("Candidate routes:", len(routes))
+    print("Best score:", best_score)
 
     return best_route, best_score
