@@ -2,22 +2,29 @@ from algorithms.real_graph import get_graph
 from services.location_service import get_nearest_node
 from services.candidate_routes import get_candidate_routes
 
-graph = get_graph()
+import osmnx as ox
+import networkx as nx
 
-source = get_nearest_node(
-    28.6139,
-    77.2090
-)
 
-destination = get_nearest_node(
-    28.7041,
-    77.1025
-)
-
-routes = get_candidate_routes(
+def get_candidate_routes(
     graph,
     source,
-    destination
-)
+    destination,
+    k=3
+):
 
-print("Candidate routes:", len(routes))
+    graph = ox.convert.to_digraph(
+        graph,
+        weight="length"
+    )
+
+    routes = list(
+        nx.shortest_simple_paths(
+            graph,
+            source,
+            destination,
+            weight="length"
+        )
+    )
+
+    return routes[:k]
