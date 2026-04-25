@@ -16,15 +16,15 @@ def get_candidate_routes(
     )
 
     routes = list(
-    islice(
-        nx.shortest_simple_paths(
-            graph,
-            source,
-            destination,
-            weight="length"
-        ),
-        k
+        islice(
+            nx.shortest_simple_paths(
+                graph,
+                source,
+                destination,
+                weight="length"
+            ),
+            k
+        )
     )
-)
 
-return routes
+    return routes
