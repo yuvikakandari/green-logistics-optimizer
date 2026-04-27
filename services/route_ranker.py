@@ -5,13 +5,10 @@ model = joblib.load(
 )
 
 
-def score_route(
-    distance,
-    traffic
-):
+def score_route(features):
 
     prediction = model.predict(
-        [[distance, traffic]]
+        [features]
     )[0]
 
     return float(prediction)
