@@ -1,42 +1,64 @@
+import numpy as np
 import pandas as pd
-import joblib
 
 from xgboost import XGBRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
+import joblib
 
-df = pd.read_csv("data/routes.csv")
+np.random.seed(42)
+
+n = 5000
+
+distance = np.random.randint(
+    5,
+    100,
+    n
+)
+
+traffic = np.random.randint(
+    1,
+    10,
+    n
+)
+
+congestion = traffic * np.random.uniform(
+    0.5,
+    1.5,
+    n
+)
+
+eta = (
+    distance * 1.2
+    + traffic * 4
+    + congestion * 3
+)
+
+df = pd.DataFrame({
+    "distance": distance,
+    "traffic": traffic,
+    "congestion": congestion,
+    "eta": eta
+})
 
 X = df[
     [
         "distance",
-        "traffic"
+        "traffic",
+        "congestion"
     ]
 ]
 
-y = df["travel_time"]
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42
-)
+y = df["eta"]
 
 model = XGBRegressor()
 
-model.fit(X_train, y_train)
-
-predictions = model.predict(X_test)
-
-mae = mean_absolute_error(
-    y_test,
-    predictions
+model.fit(
+    X,
+    y
 )
-
-print("MAE:", mae)
 
 joblib.dump(
     model,
     "models/xgboost_model.pkl"
 )
+
+print("Model saved")
