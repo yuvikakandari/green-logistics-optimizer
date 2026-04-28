@@ -1,11 +1,11 @@
+import os
 import joblib
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-model = joblib.load(
-    "models/xgboost_model.pkl"
-)
+MODEL_PATH = os.path.join(BASE_DIR, "models", "xgboost_model.pkl")
 
-
+model = joblib.load(MODEL_PATH)
 def predict_time(
     distance,
     traffic
