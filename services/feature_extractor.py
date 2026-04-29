@@ -1,6 +1,15 @@
+"""
+feature_extractor.py
+
+Extracts machine learning features from a computed route.
+
+These features will later be used to train an XGBoost model
+to predict route cost.
+"""
+
 from services.traffic_simulator import get_traffic_factor
 
-
+# Estimated speed limits (km/h)
 ROAD_SPEEDS = {
     "motorway": 90,
     "trunk": 80,
@@ -13,6 +22,10 @@ ROAD_SPEEDS = {
 
 
 def get_speed_limit(highway):
+    """
+    Returns an estimated speed for a road type.
+    """
+
     if isinstance(highway, list):
         highway = highway[0]
 
@@ -21,24 +34,24 @@ def get_speed_limit(highway):
 
 def extract_route_features(graph, route):
     """
-    Extract features from a complete route.
+    Extracts features from a route.
 
     Parameters
     ----------
-    graph : nx.MultiDiGraph
+    graph : networkx.MultiDiGraph
+        Road network graph.
     route : list
-        List of node IDs representing the route.
+        List of node IDs returned by Dijkstra.
 
     Returns
     -------
-    list
-        [distance, avg_speed, avg_traffic, travel_time]
+    dict
+        Dictionary containing route features.
     """
 
     total_distance = 0
-    total_time = 0
+    total_travel_time = 0
     traffic_values = []
-    speed_values = []
 
     for i in range(len(route) - 1):
 
@@ -58,24 +71,25 @@ def extract_route_features(graph, route):
 
         speed = get_speed_limit(highway)
 
-        traffic = get_traffic_factor()
+        traffic = get_traffic_factor(highway)
 
         speed_mps = speed * 1000 / 3600
 
         travel_time = (distance / speed_mps) * traffic
 
         total_distance += distance
-        total_time += travel_time
+        total_travel_time += travel_time
 
-        speed_values.append(speed)
         traffic_values.append(traffic)
 
-    average_speed = sum(speed_values) / len(speed_values)
-    average_traffic = sum(traffic_values) / len(traffic_values)
+    average_traffic = (
+        sum(traffic_values) / len(traffic_values)
+        if traffic_values
+        else 1.0
+    )
 
-    return [
-        total_distance,
-        average_speed,
-        average_traffic,
-        total_time,
-    ]
+    return {
+        "distance": total_distance,
+        "average_traffic": average_traffic,
+        "travel_time": total_travel_time,
+    }
