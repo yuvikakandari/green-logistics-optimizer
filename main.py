@@ -1,18 +1,24 @@
-from algorithms.graph_loader import get_graph
-from algorithms.dijkstra import dijkstra
+from routing.intelligent_router import IntelligentRouter
 
-graph = get_graph()
+router = IntelligentRouter()
 
-nodes = list(graph.nodes)
+router.assign_predicted_costs()
 
-start_node = nodes[0]
-end_node = nodes[100]
+nodes = list(router.graph.nodes)
 
-distance, path = dijkstra(
-    graph,
-    start_node,
-    end_node
+start = nodes[0]
+
+end = nodes[500]
+
+cost, path = router.shortest_route(
+    start,
+    end
 )
 
-print("Distance:", distance)
-print("Path length:", len(path))
+print("\nOptimal Route")
+
+print("-" * 40)
+
+print("Predicted Cost :", cost)
+
+print("Number of Nodes :", len(path))

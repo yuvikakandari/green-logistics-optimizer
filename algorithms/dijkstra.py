@@ -105,10 +105,13 @@ def dijkstra(graph, start_node, end_node, weight="length"):
             if not edge_data:
                 continue
 
-            edge = edge_data[0]
+            minimum_weight = float("inf")
 
-            edge_weight = edge.get(weight, 1)
-
+            for edge in edge_data.values():
+                edge_weight = edge.get(weight, float("inf"))
+                if edge_weight < minimum_weight:
+                    minimum_weight = edge_weight
+            edge_weight = minimum_weight
             new_distance = (
                 current_distance +
                 edge_weight
