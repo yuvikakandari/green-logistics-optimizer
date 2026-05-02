@@ -39,6 +39,30 @@ class IntelligentRouter:
         start_node,
         end_node
     ):
+        
+    def route_coordinates(self, path):
+        """
+        Convert graph node IDs into latitude/longitude coordinates.
+
+        Parameters
+        ----------
+        path : list[int]
+
+        Returns
+        -------
+        list[dict]
+        """
+
+        coordinates = []
+
+        for node in path:
+            coordinates.append({
+                "lat": self.graph.nodes[node]["y"],
+                "lon": self.graph.nodes[node]["x"]
+            })
+
+        return coordinates
+
         """
         Compute shortest route using predicted costs.
         """
