@@ -59,13 +59,10 @@ def optimize_route(request: RouteRequest):
         start_node,
         end_node
     )
-
+    coordinates = router.route_coordinates(path)
     return {
 
         "predicted_cost": cost,
-
-        "path": path,
-
-        "path_length": len(path)
-
+        "path_length": len(path),
+        "coordinates": coordinates
     }

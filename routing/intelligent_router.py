@@ -39,7 +39,17 @@ class IntelligentRouter:
         start_node,
         end_node
     ):
-        
+        """
+        Compute shortest route using predicted costs.
+        """
+
+        return dijkstra(
+            self.graph,
+            start_node,
+            end_node,
+            weight="predicted_cost"
+        )
+ 
     def route_coordinates(self, path):
         """
         Convert graph node IDs into latitude/longitude coordinates.
@@ -63,13 +73,3 @@ class IntelligentRouter:
 
         return coordinates
 
-        """
-        Compute shortest route using predicted costs.
-        """
-
-        return dijkstra(
-            self.graph,
-            start_node,
-            end_node,
-            weight="predicted_cost"
-        )
